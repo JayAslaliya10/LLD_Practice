@@ -185,7 +185,7 @@ class RateLimiterService{
 
 
 nt main(){
-    RateLimiterService service(make_unique<TokenBucketRateLimiter>(3, 1.0));
+    RateLimiterService service(make_unique<TokenBucketAlgorithm>(3, 1.0));
 
     cout << boolalpha;
     cout << "userA req1 -> " << service.checkRequest("userA").allowed << endl;
@@ -194,7 +194,7 @@ nt main(){
     cout << "userA req2 (rejected -- global limit hit) -> " << service.checkRequest("userA").allowed << endl;
 
     cout << "\n[setStrategy] swap to FixedWindow(2 req / 10s), applies to everyone" << endl;
-    service.setStrategy(make_unique<FixedWindowRateLimiter>(2, 10000));
+    service.setStrategy(make_unique<FixedWindowAlgorithm>(2, 10000));
 
     cout << "userA -> " << service.checkRequest("userA").allowed << endl;
     cout << "userB (counts against same global window) -> " << service.checkRequest("userB").allowed << endl;
